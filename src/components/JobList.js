@@ -28,8 +28,8 @@ const JobList = ({ filters }) => {
 
         if (response.status === 200) {
           const { jdList } = response.data;
-          console.log(response.data)
-          setJobs(jdList);
+          const filteredJobs = jdList.map(job => removeNullProperties(job));
+          setJobs(filteredJobs);
         }
       } catch (error) {
         console.error('Error fetching job data:', error);
@@ -37,11 +37,20 @@ const JobList = ({ filters }) => {
     };
 
     fetchJobs();
-  }, [filters]); // Trigger fetchJobs only when filters change
+  }, [filters]);
 
   useEffect(() => {
     applyFilters(); // Apply filters whenever jobs or filters change
-  }, [jobs, filters, companyName]);
+  }, [jobs, filters]);
+
+  const removeNullProperties = (obj) => {
+    const newObj = {};
+    for (const key in obj) {
+      // Replace null values with empty string ('') if they exist
+      newObj[key] = obj[key] === null ? '' : obj[key];
+    }
+    return newObj;
+  };
 
   const applyFilters = () => {
     if (!jobs.length) {
@@ -50,13 +59,13 @@ const JobList = ({ filters }) => {
 
     let filteredJobs = [...jobs]; // Create a copy of jobs array
 
+    // Apply filters based on the provided filters object
     if (filters.role) {
       filteredJobs = filteredJobs.filter(job => job.jobRole.toLowerCase() === filters.role.toLowerCase());
     }
     if (filters.salaryMin) {
       filteredJobs = filteredJobs.filter(job => job.minJdSalary >= filters.salaryMin);
     }
-
     if (filters.salaryMax) {
       filteredJobs = filteredJobs.filter(job => job.maxJdSalary <= filters.salaryMax);
     }
@@ -65,18 +74,14 @@ const JobList = ({ filters }) => {
     }
     if (filters.location) {
       const filterLocation = filters.location.toLowerCase().trim();
-  
       filteredJobs = filteredJobs.filter(job => {
         const jobLocation = job.location.toLowerCase().trim();
-  
-        // Check the selected filter location
         switch (filterLocation) {
           case 'remote':
             return jobLocation.includes('remote');
           case 'hybrid':
             return jobLocation.includes('hybrid');
           case 'office':
-            // For office locations, match specific cities
             return (
               jobLocation === 'delhi ncr' ||
               jobLocation === 'mumbai' ||
@@ -84,32 +89,24 @@ const JobList = ({ filters }) => {
               jobLocation === 'chennai'
             );
           default:
-            // Default to exact match of job location with selected filter
             return jobLocation === filterLocation;
         }
       });
     }
-    filteredJobs = filterJobsByCompanyName(jobs, filters.companyName);
-    
 
-    // Additional filters can be applied similarly...
-
-    if (!arraysEqual(filteredJobs, jobs)) {
-      setJobs(filteredJobs); // Update jobs state only if filtered jobs are different
+    // Filter jobs by company name (filters.companyName)
+    if (filters.companyName && filters.companyName.trim() !== '') {
+      const companyNameFilter = filters.companyName.trim().toLowerCase();
+      filteredJobs = filteredJobs.filter(job => job.companyName.toLowerCase().includes(companyNameFilter));
     }
-  };
 
-  const arraysEqual = (arr1, arr2) => {
-    if (arr1.length !== arr2.length) return false;
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) return false;
-    }
-    return true;
+    setJobs(filteredJobs); // Update jobs state with filtered jobs
   };
 
   const handleApply = (selectedJob) => {
     console.log(`Applying for job at ${selectedJob.companyName}`);
-    alert(`Applying for job at ${selectedJob.companyName}`);
+    // Open the job link in a new tab when applying
+    window.open(selectedJob.jdLink, '_blank');
   };
 
   
@@ -135,7 +132,7 @@ const JobList = ({ filters }) => {
               aboutCompany: job.jobDetailsFromCompany,
               minExperience: `${job.minExp} years`
             }}
-            onApply={handleApply}
+            onApply={() => handleApply(job)}
           />
         ))}
     </div>
