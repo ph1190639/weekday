@@ -1,0 +1,29 @@
+/* JobList.css */
+
+.job-list {
+  margin-top: 20px;
+}
+
+.job-list h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Display three cards per row */
+  gap: 20px;
+}
+@media (max-width: 1024px) {
+  .job-grid {
+    grid-template-columns: repeat(2, 1fr); /* Display two cards per row up to 1024px */
+  }
+}
+
+@media (max-width: 768px) {
+  .job-grid {
+    grid-template-columns: 1fr; /* Display one card per row on smaller screens */
+  }
+}
+
+

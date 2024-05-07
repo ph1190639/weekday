@@ -1,0 +1,122 @@
+/* JobCard.css */
+
+.job-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  flex-direction: column;
+}
+.upload__date{
+  color: rgb(158, 158, 158);
+  border: 1px solid #ccc;
+  border-radius: 53px;
+  padding: 6px 7px;
+}
+
+.company__details {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.logo__container {
+  width: 80px;
+  margin-right: 16px;
+}
+
+.company__logo {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.company__info {
+  flex-grow: 1;
+  padding-bottom: 0px;
+}
+.company__name{
+  color: rgb(202, 183, 183);
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+.company__role{
+  margin-top: 2px;
+  margin-bottom: 5px;
+
+}
+.company__location{
+margin-top: 5px;
+}
+.overall-content {
+  flex-grow: 1;
+}
+.overall-content> h4{
+  margin-bottom: 5px;
+}
+.about-company {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.about-company > button{
+  color: blue;
+  font-size: 15px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+
+}
+
+.description {
+  overflow: hidden;
+  position: relative;
+  
+}
+
+.description::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 1.5em; /* Height of the fading effect */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8)); /* White fading effect */
+}
+
+
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+/* Styling for Apply button */
+.apply-button {
+  padding: 8px 16px;
+  background-color: rgba(0, 255, 128, 0.925);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+/* Styling for Learn More button */
+.learn-more-button {
+  padding: 8px 16px;
+  background-color: rgb(54, 8, 182);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+

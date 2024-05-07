@@ -1,0 +1,45 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.filter-item {
+  flex: 0 1 calc(20% - 20px); /* Adjust based on the desired width and margin */
+  margin-right: 10px; /* Horizontal gap between filter items */
+}
+
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input::placeholder,
+select {
+  color: #888;
+}
+
+/* Additional styles for select dropdown arrow */
+select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23888" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 25px;
+}
+
+/* Adjust label position when input is focused or has value */
+input:focus::placeholder,
+input:not(:placeholder-shown)::placeholder {
+  color: dodgerblue;
+}

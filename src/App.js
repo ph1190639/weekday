@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import FilterComponent from './components/FilterComponent';
+import JobList from './components/JobList';
 
-function App() {
+const App = () => {
+  const [filters, setFilters] = useState({}); // Initialize filters state
+
+  const handleFilterChange = (filterKey, filterValue) => {
+    setFilters({
+      ...filters,
+      [filterKey]: filterValue
+    });
+  };
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <FilterComponent filters={filters} handleFilterChange={handleFilterChange} />
+      <JobList filters={filters} />
     </div>
   );
-}
+};
+
 
 export default App;
