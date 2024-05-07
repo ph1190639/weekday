@@ -5,15 +5,7 @@ import axios from 'axios';
 
 const JobList = ({ filters }) => {
   const [jobs, setJobs] = useState([]);
-  const [companyName] = useState('');
   
-  
-  const filterJobsByCompanyName = (jobs, companyName) => {
-    if (!companyName) return jobs; // No company name filter applied
-    const filteredJobs = jobs.filter(job => job.companyName.toLowerCase().includes(companyName.toLowerCase()));
-    return filteredJobs;
-  };
-
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -22,14 +14,14 @@ const JobList = ({ filters }) => {
           {
             limit: 10,
             offset: 0,
-            filters: filters || {} // Ensure filters is an object or default to empty object
+            filters: filters || {}
           }
         );
 
         if (response.status === 200) {
           const { jdList } = response.data;
           const filteredJobs = jdList.map(job => removeNullProperties(job));
-          setJobs(filteredJobs);
+          applyFilters(filteredJobs); // Apply filters to fetched jobs
         }
       } catch (error) {
         console.error('Error fetching job data:', error);
@@ -39,25 +31,8 @@ const JobList = ({ filters }) => {
     fetchJobs();
   }, [filters]);
 
-  useEffect(() => {
-    applyFilters(); // Apply filters whenever jobs or filters change
-  }, [jobs, filters]);
-
-  const removeNullProperties = (obj) => {
-    const newObj = {};
-    for (const key in obj) {
-      // Replace null values with empty string ('') if they exist
-      newObj[key] = obj[key] === null ? '' : obj[key];
-    }
-    return newObj;
-  };
-
-  const applyFilters = () => {
-    if (!jobs.length) {
-      return; // If jobs array is empty, do nothing
-    }
-
-    let filteredJobs = [...jobs]; // Create a copy of jobs array
+  const applyFilters = (jobsToFilter) => {
+    let filteredJobs = [...jobsToFilter];
 
     // Apply filters based on the provided filters object
     if (filters.role) {
@@ -93,8 +68,6 @@ const JobList = ({ filters }) => {
         }
       });
     }
-
-    // Filter jobs by company name (filters.companyName)
     if (filters.companyName && filters.companyName.trim() !== '') {
       const companyNameFilter = filters.companyName.trim().toLowerCase();
       filteredJobs = filteredJobs.filter(job => job.companyName.toLowerCase().includes(companyNameFilter));
@@ -103,14 +76,19 @@ const JobList = ({ filters }) => {
     setJobs(filteredJobs); // Update jobs state with filtered jobs
   };
 
+  const removeNullProperties = (obj) => {
+    const newObj = {};
+    for (const key in obj) {
+      newObj[key] = obj[key] === null ? '' : obj[key];
+    }
+    return newObj;
+  };
+
   const handleApply = (selectedJob) => {
     console.log(`Applying for job at ${selectedJob.companyName}`);
     // Open the job link in a new tab when applying
     window.open(selectedJob.jdLink, '_blank');
   };
-
-  
-
 
   return (
   
