@@ -1,5 +1,5 @@
 import React from 'react';
-import './FilterComponent.css'; // Import your CSS file
+import './FilterComponent.css';
 
 const FilterComponent = ({ filters, handleFilterChange }) => {
   // Destructure filters with default values in case filters is undefined
@@ -8,8 +8,6 @@ const FilterComponent = ({ filters, handleFilterChange }) => {
     numEmployees = '',
     minExperience = '',
     minBaseSalary = '',
-    companyName = '',
-    workMode = 'remote'
   } = filters || {};
 
   return (
@@ -24,7 +22,8 @@ const FilterComponent = ({ filters, handleFilterChange }) => {
           <option value="">Role</option>
           <option value="frontend">Frontend</option>
           <option value="backend">Backend</option>
-          <option value="fullstack">Fullstack</option>
+          <option value="ios">IOS</option>
+          <option value="android">Android</option>
         </select>
       </div>
 
@@ -63,16 +62,18 @@ const FilterComponent = ({ filters, handleFilterChange }) => {
       {/* Work Mode Filter */}
       <div className="filter-item">
         <select
-          value={workMode}
-          onChange={(e) => handleFilterChange('workMode', e.target.value)}
+          value={filters.location}
+          onChange={(e) => handleFilterChange('location', e.target.value)}
         >
+          <option value="">Location</option>
           <option value="remote">Remote</option>
           <option value="hybrid">Hybrid</option>
           <option value="delhi ncr">Delhi NCR</option>
           <option value="mumbai">Mumbai</option>
-          <option value="bangalore">bangalore</option>
-          <option value="chennnai">Chennnai</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="chennai">Chennai</option>
         </select>
+
       </div>
 
       {/* Minimum Base Salary Filter */}
@@ -83,10 +84,10 @@ const FilterComponent = ({ filters, handleFilterChange }) => {
           onChange={(e) => handleFilterChange('minBaseSalary', e.target.value)}
         >
           <option value="">Minimum Base Salary</option>
-          <option value="0L">0L</option>
-          <option value="10L">10L</option>
-          <option value="20L">20L</option>
-          <option value="30L">30L</option>
+          <option value="0-20">0-20</option>
+          <option value="20-30">20-30</option>
+          <option value="30-60">30-60</option>
+          <option value="60-100">60-100</option>
         </select>
       </div>
 

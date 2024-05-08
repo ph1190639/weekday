@@ -50,27 +50,40 @@ const JobList = ({ filters }) => {
     if (filters.location) {
       const filterLocation = filters.location.toLowerCase().trim();
       filteredJobs = filteredJobs.filter(job => {
-        const jobLocation = job.location.toLowerCase().trim();
-        switch (filterLocation) {
-          case 'remote':
-            return jobLocation.includes('remote');
-          case 'hybrid':
-            return jobLocation.includes('hybrid');
-          case 'office':
-            return (
-              jobLocation === 'delhi ncr' ||
-              jobLocation === 'mumbai' ||
-              jobLocation === 'bangalore' ||
-              jobLocation === 'chennai'
-            );
-          default:
-            return jobLocation === filterLocation;
+        const jobLocation = (job.location || '').toLowerCase().trim();
+    
+        if (jobLocation) {
+          switch (filterLocation) {
+            case 'remote':
+              return jobLocation.includes('remote');
+            case 'hybrid':
+              return jobLocation.includes('hybrid');
+            case 'delhi ncr':
+            case 'mumbai':
+            case 'bangalore':
+            case 'chennai':
+              return jobLocation === filterLocation;
+            default:
+              return jobLocation === filterLocation;
+          }
         }
+        
+        return false;
       });
     }
     if (filters.companyName && filters.companyName.trim() !== '') {
       const companyNameFilter = filters.companyName.trim().toLowerCase();
       filteredJobs = filteredJobs.filter(job => job.companyName.toLowerCase().includes(companyNameFilter));
+    }
+    if (filters.minBaseSalary) {
+      const [min, max] = filters.minBaseSalary.split('-').map(parseFloat);
+      if (!isNaN(min) && !isNaN(max)) {
+        filteredJobs = filteredJobs.filter(job => {
+          const jobSalary = job.minJdSalary + '-' + job.maxJdSalary;
+          const [jobMin, jobMax] = jobSalary.split('-').map(parseFloat);
+          return jobMin >= min && jobMax <= max;
+        });
+      }
     }
 
     setJobs(filteredJobs); // Update jobs state with filtered jobs
@@ -85,8 +98,6 @@ const JobList = ({ filters }) => {
   };
 
   const handleApply = (selectedJob) => {
-    console.log(`Applying for job at ${selectedJob.companyName}`);
-    // Open the job link in a new tab when applying
     window.open(selectedJob.jdLink, '_blank');
   };
 
@@ -95,7 +106,6 @@ const JobList = ({ filters }) => {
     <div className="job-list">
 
     <div className="job-grid">
-      {/* Check if jobs is an array before mapping */}
       {Array.isArray(jobs) &&
         jobs.map((job) => (
           <JobCard
