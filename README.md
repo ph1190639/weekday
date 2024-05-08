@@ -2,10 +2,6 @@
 
 This is a React application that displays job listings with filtering capabilities. Users can filter job listings based on various criteria such as job role, salary range, experience level, location, and company name.
 
-## Demo
-
-You can view a live demo of the application [here](#) (Insert deployed application URL).
-
 ## Features
 
 - Display job listings fetched from an API.
